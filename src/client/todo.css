@@ -1,0 +1,17 @@
+.container {
+    width: 50%;
+}
+
+.container .todo-form .item-input {
+    display: inline;
+    width: 80%;
+    margin: 2px 0;
+}
+
+.container .todo-form .add-button {
+    margin: 0 5px;
+}
+
+.container .todo-list {
+    margin: 20px 0;
+}
