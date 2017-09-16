@@ -13,18 +13,16 @@ class App extends React.Component {
         this.updateTodoList = this.updateTodoList.bind(this);
     }
 
-    updateTodoList(updatedItems) {
+    updateTodoList(itemToRemove) {
+        var updatedItems = this.state.items.filter((item, index) => { return item != itemToRemove.state.value });
         this.setState({
             items: updatedItems
         });
-        console.log(updatedItems);
-        this.render(<App/>, document.getElementById("app"));
     }
 
     addNewItemToList(itemValue) {
         this.state.items.push(itemValue);
         this.setState({items : this.state.items});
-        this.render(<App/>, document.getElementById("app"));
     }
 
     render() {
@@ -32,7 +30,7 @@ class App extends React.Component {
         <div className ="container">
             <h3 className="page-header"> Todo App </h3>
             <ItemForm addNewItem = {this.addNewItemToList} />
-            <TODOList items = {this.state.items}  />
+            <TODOList items = {this.state.items} updateList = {this.updateTodoList} />
         </div>
         )
     }

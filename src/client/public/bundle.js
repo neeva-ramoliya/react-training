@@ -9792,19 +9792,20 @@ var App = function (_React$Component) {
 
     _createClass(App, [{
         key: 'updateTodoList',
-        value: function updateTodoList(updatedItems) {
+        value: function updateTodoList(itemToRemove) {
+            var updatedItems = this.state.items.filter(function (item, index) {
+                return item != itemToRemove.state.value;
+            });
             this.setState({
                 items: updatedItems
             });
             console.log(updatedItems);
-            this.render(_react2.default.createElement(App, null), document.getElementById("app"));
         }
     }, {
         key: 'addNewItemToList',
         value: function addNewItemToList(itemValue) {
             this.state.items.push(itemValue);
             this.setState({ items: this.state.items });
-            this.render(_react2.default.createElement(App, null), document.getElementById("app"));
         }
     }, {
         key: 'render',
@@ -9818,7 +9819,7 @@ var App = function (_React$Component) {
                     ' Todo App '
                 ),
                 _react2.default.createElement(_itemForm2.default, { addNewItem: this.addNewItemToList }),
-                _react2.default.createElement(_todoList2.default, { items: this.state.items })
+                _react2.default.createElement(_todoList2.default, { items: this.state.items, updateList: this.updateTodoList })
             );
         }
     }]);
@@ -22491,36 +22492,46 @@ var TODOList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TODOList.__proto__ || Object.getPrototypeOf(TODOList)).call(this, props));
 
-        _this.state = { items: props.items };
         _this.removeItemFromList = _this.removeItemFromList.bind(_this);
         return _this;
     }
 
     _createClass(TODOList, [{
-        key: 'removeItemFromList',
-        value: function removeItemFromList(itemToRemove) {
-            var items = this.state.items.filter(function (item, index) {
-                return item != itemToRemove.state.value;
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            var listItems = this.props.items.map(function (item, index) {
+                return _react2.default.createElement(_listItem2.default, { id: index, value: item, removeItem: _this2.removeItemFromList });
             });
             this.setState({
-                items: items
+                listItems: listItems
             });
-            console.log(items);
-            this.render();
-            // this.props.updateList(items);
+        }
+    }, {
+        key: 'removeItemFromList',
+        value: function removeItemFromList(itemToRemove) {
+            this.props.updateList(itemToRemove);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            var _this3 = this;
+
+            var listItems = newProps.items.map(function (item, index) {
+                return _react2.default.createElement(_listItem2.default, { id: index, value: item, removeItem: _this3.removeItemFromList });
+            });
+            this.setState({
+                listItems: listItems
+            });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
-            var listItems = this.state.items.map(function (item, index) {
-                return _react2.default.createElement(_listItem2.default, { id: index, value: item, removeItem: _this2.removeItemFromList });
-            });
             return _react2.default.createElement(
                 'ul',
                 { className: 'list-group todo-list' },
-                listItems
+                this.state.listItems
             );
         }
     }]);
@@ -22575,6 +22586,16 @@ var ListItem = function (_React$Component) {
         key: "removeItem",
         value: function removeItem(e) {
             this.props.removeItem(this);
+        }
+    }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(newProps) {
+            if (this.props != newProps) {
+                this.setState({
+                    id: newProps.id,
+                    value: newProps.value
+                });
+            }
         }
     }, {
         key: "render",

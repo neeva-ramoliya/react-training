@@ -15,6 +15,15 @@ class ListItem extends React.Component {
         this.props.removeItem(this);
     }
 
+    componentWillReceiveProps(newProps) {
+        if(this.props != newProps) {
+            this.setState({
+                id: newProps.id,
+                value: newProps.value
+            })
+        }
+    }
+
     render() {
         return (
             <div key={this.state.id} className="list-group-item">
