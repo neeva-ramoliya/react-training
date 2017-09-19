@@ -9786,20 +9786,16 @@ var App = function (_React$Component) {
             items: []
         };
         _this.addNewItemToList = _this.addNewItemToList.bind(_this);
-        _this.updateTodoList = _this.updateTodoList.bind(_this);
+        _this.updateHandler = _this.updateHandler.bind(_this);
         return _this;
     }
 
     _createClass(App, [{
-        key: 'updateTodoList',
-        value: function updateTodoList(itemToRemove) {
-            var updatedItems = this.state.items.filter(function (item, index) {
-                return item != itemToRemove.state.value;
-            });
+        key: 'updateHandler',
+        value: function updateHandler(updatedItems) {
             this.setState({
                 items: updatedItems
             });
-            console.log(updatedItems);
         }
     }, {
         key: 'addNewItemToList',
@@ -9819,7 +9815,7 @@ var App = function (_React$Component) {
                     ' Todo App '
                 ),
                 _react2.default.createElement(_itemForm2.default, { addNewItem: this.addNewItemToList }),
-                _react2.default.createElement(_todoList2.default, { items: this.state.items, updateList: this.updateTodoList })
+                _react2.default.createElement(_todoList2.default, { items: this.state.items, updateParent: this.updateHandler })
             );
         }
     }]);
@@ -22492,7 +22488,9 @@ var TODOList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TODOList.__proto__ || Object.getPrototypeOf(TODOList)).call(this, props));
 
+        _this.state = { items: props.items };
         _this.removeItemFromList = _this.removeItemFromList.bind(_this);
+        _this.changeItem = _this.changeItem.bind(_this);
         return _this;
     }
 
@@ -22501,7 +22499,7 @@ var TODOList = function (_React$Component) {
         value: function componentWillMount() {
             var _this2 = this;
 
-            var listItems = this.props.items.map(function (item, index) {
+            var listItems = this.state.items.map(function (item, index) {
                 return _react2.default.createElement(_listItem2.default, { id: index, value: item, removeItem: _this2.removeItemFromList });
             });
             this.setState({
@@ -22511,7 +22509,22 @@ var TODOList = function (_React$Component) {
     }, {
         key: 'removeItemFromList',
         value: function removeItemFromList(itemToRemove) {
-            this.props.updateList(itemToRemove);
+            var updatedItems = this.state.items.filter(function (item, index) {
+                return index != itemToRemove.state.id;
+            });
+            this.props.updateParent(updatedItems);
+        }
+    }, {
+        key: 'changeItem',
+        value: function changeItem(itemToUpdate) {
+            var updatedItems = this.state.items.map(function (item, index) {
+                if (index == itemToUpdate.state.id) {
+                    return item = itemToUpdate.state.value;
+                } else {
+                    return item;
+                }
+            });
+            this.props.updateParent(updatedItems);
         }
     }, {
         key: 'componentWillReceiveProps',
@@ -22519,10 +22532,11 @@ var TODOList = function (_React$Component) {
             var _this3 = this;
 
             var listItems = newProps.items.map(function (item, index) {
-                return _react2.default.createElement(_listItem2.default, { id: index, value: item, removeItem: _this3.removeItemFromList });
+                return _react2.default.createElement(_listItem2.default, { key: index, id: index, value: item, removeItem: _this3.removeItemFromList, changeItem: _this3.changeItem });
             });
             this.setState({
-                listItems: listItems
+                listItems: listItems,
+                items: newProps.items
             });
         }
     }, {
@@ -22576,19 +22590,45 @@ var ListItem = function (_React$Component) {
 
         _this.state = {
             id: _this.props.id,
-            value: _this.props.value
+            value: _this.props.value,
+            isEditing: false
         };
         _this.removeItem = _this.removeItem.bind(_this);
+        _this.editClickHandler = _this.editClickHandler.bind(_this);
+        _this.updateItem = _this.updateItem.bind(_this);
+        _this.stopEditing = _this.stopEditing.bind(_this);
         return _this;
     }
 
     _createClass(ListItem, [{
-        key: "removeItem",
+        key: 'removeItem',
         value: function removeItem(e) {
             this.props.removeItem(this);
         }
     }, {
-        key: "componentWillReceiveProps",
+        key: 'editClickHandler',
+        value: function editClickHandler(e) {
+            this.setState({
+                isEditing: true
+            });
+        }
+    }, {
+        key: 'stopEditing',
+        value: function stopEditing() {
+            this.setState({
+                isEditing: false
+            });
+            this.props.changeItem(this);
+        }
+    }, {
+        key: 'updateItem',
+        value: function updateItem(e) {
+            this.setState({
+                value: e.target.value
+            });
+        }
+    }, {
+        key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(newProps) {
             if (this.props != newProps) {
                 this.setState({
@@ -22598,24 +22638,28 @@ var ListItem = function (_React$Component) {
             }
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
-                "div",
-                { key: this.state.id, className: "list-group-item" },
+                'li',
+                { key: this.state.id, className: this.state.isEditing ? 'editing todo-item' : 'todo-item', onDoubleClick: this.editClickHandler },
+                _react2.default.createElement('input', { value: this.state.value, ref: function ref(input) {
+                        _this2.itemInput = input;
+                    }, className: 'item-input-field form-control', onChange: this.updateItem, onBlur: this.stopEditing }),
                 _react2.default.createElement(
-                    "label",
-                    null,
-                    this.state.value,
-                    " "
+                    'label',
+                    { className: 'item-label form-control' },
+                    this.state.value
                 ),
                 _react2.default.createElement(
-                    "button",
-                    { className: "close close-button", onClick: this.removeItem },
+                    'button',
+                    { className: 'close close-button', onClick: this.removeItem },
                     _react2.default.createElement(
-                        "span",
+                        'span',
                         null,
-                        "\xD7"
+                        '\xD7'
                     )
                 )
             );

@@ -4,11 +4,13 @@ import ListItem from './listItem.jsx';
 class TODOList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {items : props.items}
         this.removeItemFromList = this.removeItemFromList.bind(this);
+        this.changeItem = this.changeItem.bind(this);
     }
 
     componentWillMount() {
-         var listItems = this.props.items.map((item, index) => {
+         var listItems = this.state.items.map((item, index) => {
                  return <ListItem id={index} value={item} removeItem={this.removeItemFromList} />
               }
         )
@@ -18,16 +20,29 @@ class TODOList extends React.Component {
     }
 
     removeItemFromList(itemToRemove) { 
-        this.props.updateList(itemToRemove);
+        var updatedItems = this.state.items.filter((item, index) => { return index != itemToRemove.state.id });
+        this.props.updateParent(updatedItems);
+    }
+
+    changeItem(itemToUpdate) {
+        var updatedItems = this.state.items.map((item,index) => {
+                if (index == itemToUpdate.state.id) {
+                  return  item = itemToUpdate.state.value;
+                } else {
+                    return item;
+                }
+         });
+        this.props.updateParent(updatedItems);
     }
 
     componentWillReceiveProps(newProps) {
         var listItems = newProps.items.map((item, index) => {
-                 return <ListItem id={index} value={item} removeItem={this.removeItemFromList} />
+                 return <ListItem  key= {index} id={index} value={item} removeItem={this.removeItemFromList} changeItem={this.changeItem} />
               }
         )
         this.setState({
-            listItems: listItems
+            listItems: listItems,
+            items: newProps.items
         })  
     }
 

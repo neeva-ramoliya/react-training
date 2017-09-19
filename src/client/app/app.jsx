@@ -10,11 +10,10 @@ class App extends React.Component {
             items: []
         }
         this.addNewItemToList = this.addNewItemToList.bind(this);
-        this.updateTodoList = this.updateTodoList.bind(this);
+        this.updateHandler = this.updateHandler.bind(this);
     }
 
-    updateTodoList(itemToRemove) {
-        var updatedItems = this.state.items.filter((item, index) => { return item != itemToRemove.state.value });
+    updateHandler(updatedItems) {
         this.setState({
             items: updatedItems
         });
@@ -27,11 +26,11 @@ class App extends React.Component {
 
     render() {
         return (
-        <div className ="container">
-            <h3 className="page-header"> Todo App </h3>
-            <ItemForm addNewItem = {this.addNewItemToList} />
-            <TODOList items = {this.state.items} updateList = {this.updateTodoList} />
-        </div>
+            <div className ="container">
+                <h3 className="page-header"> Todo App </h3>
+                <ItemForm addNewItem = {this.addNewItemToList} />
+                <TODOList items = {this.state.items} updateParent = {this.updateHandler} />
+            </div>
         )
     }
 }

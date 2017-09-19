@@ -26,7 +26,7 @@ class ItemForm extends React.Component {
     render() {
         return (
             <div className = "form-inline todo-form">
-                  <input type="text" className ="form-control item-input" ref = {(input) => { this.itemInput = input; }} id="item-input" onChange={this.onItemChange} value={this.state.item} />
+                <input type="text" className ="form-control item-input" ref = {(input) => { this.itemInput = input; }} id="item-input" onChange={this.onItemChange} value={this.state.item} />
                 <button onClick={this.addButtonHandler} className  = "btn add-button"> Add </button>
             </div>
         )
