@@ -1,4 +1,5 @@
 import React from 'react';
+import TodoActions from '../actions/todoActions';
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class ItemForm extends React.Component {
     }
 
     addButtonHandler(e) {
-        this.props.addNewItem(this.state.item);
+        TodoActions.itemAdded(this.state.item);
          this.setState({
             "item": ""
         });
