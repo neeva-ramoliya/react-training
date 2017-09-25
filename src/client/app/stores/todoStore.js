@@ -18,10 +18,15 @@ var TodoStore = Reflux.createStore({
     listenables: [TodoActions],
 
     items: [],
-     
-     getInitialState() {
-         return this.items;
-     },
+
+    init() {
+       var todoList = localStorage.getItem('todoList'); 
+       this.items = todoList !=null && todoList!= "" ? JSON.parse(todoList) : [];
+    },
+
+    getInitialState() {
+        return this.items;
+    },
 
     onItemAdded(item) {
         this.items.push(item);
@@ -34,12 +39,13 @@ var TodoStore = Reflux.createStore({
     },
 
     onItemRemove(id) {
-       var items = this.items.filter((item,index) => { return index != id });
+        var items = this.items.filter((item, index) => { return index != id });
         this.items = items;
         this.update();
     },
 
     update() {
+        localStorage.setItem('todoList', JSON.stringify(this.items));
         this.trigger(this.items);
     }
 })
