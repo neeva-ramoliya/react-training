@@ -2,16 +2,17 @@
   "name": "react-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "webpack -d --watch",
-    "build": "webpack"
+    "dev": "webpack -p",
+    "build": "webpack",
+    "start": "webpack-dev-server --watch --inline --port 3000"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.7.1"
+    "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
