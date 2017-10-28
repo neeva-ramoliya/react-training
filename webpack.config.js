@@ -20,6 +20,16 @@ var config = {
             }
         ]
     },
+
+    devServer: {
+        historyApiFallback: true,
+        stats: 'minimal',
+        compress: true,
+        inline: true,
+        host: '0.0.0.0',
+        port: 8080,
+        open: 'http://localhost:8080'
+    }
 };
 
 module.exports = config;

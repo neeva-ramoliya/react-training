@@ -1,14 +1,19 @@
 
 FROM node:6-alpine
 
-LABEL name="react-app"
+RUN mkdir app
 
-EXPOSE 3000
+WORKDIR /app/
 
+COPY ./package.json /app/
 
-# Install dependencies
-WORKDIR /reactApp
+Run npm install
 
-COPY . /reactApp
+COPY ./webpack.config.js ./.babelrc ./index.html /app/
 
-RUN npm Install && npm run start
+COPY ./src /app/src
+
+RUN npm run build
+
+EXPOSE 8080
+
