@@ -1,0 +1,97 @@
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker build -t app .
+Sending build context to Docker daemon  144.7MB
+Step 1/6 : FROM node:6-alpine
+ ---> 4ffd409eb2a4
+Step 2/6 : LABEL name "react-app"
+ ---> Running in f4e0a930f90e
+ ---> 28dfd3f5c9c0
+Removing intermediate container f4e0a930f90e
+Step 3/6 : EXPOSE 3000
+ ---> Running in 16f6e7c57080
+ ---> fb5ac42796c6
+Removing intermediate container 16f6e7c57080
+Step 4/6 : WORKDIR /reactApp
+ ---> 8b9154ab568a
+Removing intermediate container 4dadf46b6ab1
+Step 5/6 : COPY . /reactApp
+ ---> f86c931cdb35
+Step 6/6 : RUN npm Install && npm run start
+ ---> Running in 02489c38f698
+npm info it worked if it ends with ok
+npm info using npm@3.10.10
+npm info using node@v6.11.4
+
+Usage: npm <command>
+
+where <command> is one of:
+    access, adduser, bin, bugs, c, cache, completion, config,
+    ddp, dedupe, deprecate, dist-tag, docs, edit, explore, get,
+    help, help-search, i, init, install, install-test, it, link,
+    list, ln, login, logout, ls, outdated, owner, pack, ping,
+    prefix, prune, publish, rb, rebuild, repo, restart, root,
+    run, run-script, s, se, search, set, shrinkwrap, star,
+    stars, start, stop, t, tag, team, test, tst, un, uninstall,
+    unpublish, unstar, up, update, v, version, view, whoami
+
+npm <cmd> -h     quick help on <cmd>
+npm -l           display full usage info
+npm help <term>  search for help on <term>
+npm help npm     involved overview
+
+Specify configs in the ini-formatted file:
+    /root/.npmrc
+or on the command line via: npm <command> --key value
+Config info can be viewed via: npm help config
+
+npm@3.10.10 /usr/local/lib/node_modules/npm
+The command '/bin/sh -c npm Install && npm run start' returned a non-zero code: 1
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+<none>              <none>              f86c931cdb35        2 minutes ago       176MB
+<none>              <none>              43e4d45b5446        38 minutes ago      176MB
+georgejose/node     latest              7aa0ecaa7593        3 days ago          109MB
+node                6-alpine            4ffd409eb2a4        4 days ago          54.6MB
+hello-world         latest              05a3bd381fc2        3 weeks ago         1.84kB
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker push
+,dockerignore      .gitignore         node_modules/      src/
+.babelrc           dockerfile         package.json       webpack.config.js
+.git/              index.html         README.md
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: neeva123
+Password:
+Login Succeeded
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker pull neeva123/react-app
+Using default tag: latest
+Error response from daemon: manifest for neeva123/react-app:latest not found
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+<none>              <none>              f86c931cdb35        10 minutes ago      176MB
+<none>              <none>              43e4d45b5446        About an hour ago   176MB
+georgejose/node     latest              7aa0ecaa7593        3 days ago          109MB
+node                6-alpine            4ffd409eb2a4        4 days ago          54.6MB
+hello-world         latest              05a3bd381fc2        3 weeks ago         1.84kB
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker tag f86c931cdb35 neeva123/test1
+
+Neeva@DESKTOP-VSE111C MINGW64 /d/React-Training/react-training (react-todo-app)
+$ docker push neeva123/test1
+The push refers to a repository [docker.io/neeva123/test1]
+9a5189552542: Pushed
+0be5b20b98b0: Pushed
+647bc3938487: Mounted from library/node
+acc8ddd7ce4f: Mounted from library/node
+2b0fb280b60d: Mounted from library/node
+latest: digest: sha256:f1fe9f9060a3892c205b9bc132974501d6bd5e0c52b8263e31a4f933fce264a1 size: 1369

@@ -1,0 +1,60 @@
+.container {
+    width: 50%;
+}
+
+.container .todo-form .item-input {
+    display: inline;
+    width: 80%;
+    margin: 2px 0;
+}
+
+.container .todo-form .add-button {
+    margin: 0 5px;
+}
+
+.container .todo-list {
+    margin: 20px 0;
+}
+
+.item-input-field {
+    display: none;
+    height: 40px;
+}
+
+.todo-item {
+   list-style: none;
+    position: relative;
+}
+
+.todo-item .close-button {
+    display: none;
+    
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.todo-item:hover .close-button {
+    display: block;
+    position: absolute;
+    right: 10px;
+ }
+
+.item-label {
+    display: inline-block;
+    height:40px;
+    padding: 10px 12px;
+    margin: 0;
+    font-weight: 400;
+}
+
+.editing .item-input-field {
+    display: inline-block;
+    width: 100%;
+    border: none;
+    font-weight: 400;
+}
+
+.editing .item-label {
+    display: none;
+}
